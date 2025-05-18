@@ -1,24 +1,55 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Game Đoán Số</title>
-  <style>
-    body { font-family: Arial; text-align: center; margin-top: 50px; }
-    input, button { padding: 10px; font-size: 16px; }
-    #message { margin-top: 20px; font-weight: bold; }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đoán Số | Game Mini</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h1>🎮 Game Đoán Số</h1>
-  <p>Hãy đoán một số từ 1 đến 100</p>
-  <input type="number" id="guessInput" />
-  <button onclick="checkGuess()">Đoán</button>
-  <p id="message"></p>
-  <button onclick="resetGame()">Chơi lại</button>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <!-- Login Page -->
+  <div id="loginPage" class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-4 text-center">🔐 Đăng nhập</h2>
+    <input id="username" type="text" placeholder="Tài khoản"
+           class="w-full p-2 mb-4 border border-gray-300 rounded-md">
+    <input id="password" type="password" placeholder="Mật khẩu"
+           class="w-full p-2 mb-4 border border-gray-300 rounded-md">
+    <button onclick="login()"
+            class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Đăng nhập</button>
+    <p id="loginError" class="text-red-500 mt-2 hidden text-sm text-center">Sai tài khoản hoặc mật khẩu</p>
+  </div>
+
+  <!-- Game Page -->
+  <div id="gamePage" class="hidden bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
+    <h1 class="text-2xl font-bold mb-4">🎮 Game Đoán Số</h1>
+    <p class="mb-2">Hãy đoán một số từ 1 đến 100</p>
+    <input id="guessInput" type="number" class="p-2 border border-gray-300 rounded-md w-full mb-4">
+    <button onclick="checkGuess()" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Đoán</button>
+    <p id="message" class="mt-4 font-semibold"></p>
+    <button onclick="resetGame()" class="mt-4 text-sm text-blue-500 hover:underline">Chơi lại</button>
+  </div>
 
   <script>
+    // Đăng nhập đơn giản (giả lập frontend)
+    const validUser = {
+      username: "admin",
+      password: "123456"
+    };
+
+    function login() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      const error = document.getElementById("loginError");
+
+      if (user === validUser.username && pass === validUser.password) {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("gamePage").classList.remove("hidden");
+      } else {
+        error.classList.remove("hidden");
+      }
+    }
+
+    // Logic game đoán số
     let secretNumber = Math.floor(Math.random() * 100) + 1;
 
     function checkGuess() {
@@ -27,10 +58,13 @@
 
       if (guess > secretNumber) {
         message.textContent = "❌ Quá cao!";
+        message.className = "mt-4 text-red-500 font-semibold";
       } else if (guess < secretNumber) {
         message.textContent = "❌ Quá thấp!";
+        message.className = "mt-4 text-red-500 font-semibold";
       } else {
         message.textContent = "✅ Đúng rồi! Bạn thật tuyệt!";
+        message.className = "mt-4 text-green-600 font-semibold";
       }
     }
 
